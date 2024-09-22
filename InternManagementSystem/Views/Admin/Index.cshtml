@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Stajyer Yönetim Sistemi</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sign-in.css" rel="stylesheet" />
+    <link href="sign-in.css" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+
+    <main class="form-signin w-100 m-auto">
+        @using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+        {
+            <h1 class="h3 mb-3 fw-normal">Admin Giriş</h1>
+            <br />
+            <div class="form-floating">
+                <input id="username" type="text" class="form-control"  placeholder="Username" name="username">
+                <label for="username">Kullanıcı adı</label>
+            </div>
+            <br />
+            <div class="form-floating">
+                <input id="password" type="password" class="form-control" placeholder="Password" name="password">
+                <label for="password">Şifre</label>
+            </div>
+            <br />
+
+            <button class="btn btn-primary w-100 py-2" type="submit">Giriş Yap</button>
+        }
+
+    </main>
+
+</body>
+</html>
+

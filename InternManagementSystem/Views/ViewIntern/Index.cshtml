@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "ViewInterns";
+    Layout = "~/Views/Shared/_InternLayout.cshtml";
+}
+@model List<InternManagementSystem.Models.InternInfos>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Silme Onayı</h5>
+            </div>
+            <div class="modal-body">
+                Bu kaydı silmek istediğinize emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirmYes" class="btn btn-outline-danger">Evet</button>
+                <button type="button" id="confirmNo" class="btn btn-outline-success" data-dismiss="modal">Hayır</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header text-center">
+            Stajyer Bilgileri
+        </div>
+        <div class="card-body">
+            <form method="post" action="/ViewIntern/Index" id="internForm">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="InternshipStart" class="form-label">Stajyer Başlangıç Tarihi</label>
+                        <input type="date" class="form-control" id="InternshipStart" name="InternshipStart">
+                    </div>
+                    <div class="col-6">
+                        <label for="InternshipEnd" class="form-label">Stajyer Bitiş Tarihi</label>
+                        <input type="date" class="form-control" id="InternshipEnd" name="InternshipEnd">
+                    </div>
+                </div>
+                <br />
+                <button type="submit" id="checkDateButton" class="btn btn-primary">Listele</button>
+            </form>
+            <br />
+
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead style="border:3px solid black;">
+                        <tr>
+                            <th>İsim</th>
+                            <th>Soyisim</th>
+                            <th>E-Posta</th>
+                            <th>Okul</th>
+                            <th>Bölüm</th>
+                            <th>Şehir</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var intern in Model)
+                        {
+                            <tr style="border: 1px solid black">
+                                <td>@intern.FirstName</td>
+                                <td>@intern.LastName</td>
+                                <td>@intern.Email</td>
+                                @if (intern.UniversityId != null)
+                                {
+                                    <td>@intern.Universities.UniversityName</td>
+                                }
+                                @if (intern.HschoolId != null)
+                                {
+                                    <td>@intern.Hschools.HschoolName</td>
+                                }
+                                @if (intern.OtherName != null)
+                                {
+                                    <td>@intern.OtherName</td>
+                                }
+                                <td>@intern.Departments.DepartmentName</td>
+                                <td>@intern.Cities.CityName</td>
+                                <td>@intern.InternshipStartDate.ToString("dd.MM.yyyy")</td>
+                                <td>@intern.InternshipEndDate.ToString("dd.MM.yyyy")</td>
+                                <td>
+                                    <a href="@Url.Action("ChangeIntern", "ViewIntern", new { id = intern.InternId })" class="btn btn-success">Güncelle</a>
+                                </td>
+                                <td>
+                                    <form action="/ViewIntern/DeleteIntern" method="post">
+                                        <input type="hidden" name="id" value="@intern.InternId" />
+                                        <button class="btn btn-primary btn-danger" type="button">Sil</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let form = null;
+        $('.btn-danger').on('click', function (e) {
+            e.preventDefault();
+            form = $(this).closest('form');
+            $('#confirmationModal').modal('show');
+        });
+
+        $('#confirmYes').on('click', function () {
+            if (form) {
+                form.submit();
+            }
+        });
+        $('#confirmNo').on('click', function () {
+            $('#confirmationModal').modal('hide');
+        });
+    });
+ 
+</script>

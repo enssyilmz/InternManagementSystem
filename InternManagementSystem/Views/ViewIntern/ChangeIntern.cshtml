@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "ChangeIntern";
+    Layout = "~/Views/Shared/_InternLayout.cshtml";
+}
+@model InternManagementSystem.Models.InternInfos
+@using (Html.BeginForm("Change", "ViewIntern", FormMethod.Post))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.InternId)
+        @Html.TextBoxFor(m => m.InternId, new { @class = "form-control", @readonly = "readonly" })
+        <br />
+        @Html.Label("FirstName", "İsim")
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        <br />
+        @Html.Label("LastName", "Soyisim")
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        <br />
+        @Html.Label("Email", "E-Posta")
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        <br />
+        @if (Model.Universities != null && Model.UniversityId != null)
+        {
+            @Html.Label("UniversityName", "Okul")
+            @Html.DropDownListFor(m => m.UniversityId, (SelectList)ViewBag.Universities, new { @class = "form-control" })
+        }
+        @if (Model.Hschools != null && Model.HschoolId != null)
+        {
+            @Html.Label("HschoolName", "Okul")
+            @Html.DropDownListFor(m => m.HschoolId, (SelectList)ViewBag.Hschools, new { @class = "form-control" })
+        }
+        @if (Model.OtherName != null)
+        {
+            @Html.Label("OtherName", "Okul")
+            @Html.TextBoxFor(m => m.OtherName, new { @class = "form-control" })
+        }
+        <br />
+        @Html.Label("DepartmentName", "Bölüm")
+        @Html.DropDownListFor(m => m.DepartmentId, (SelectList)ViewBag.Departments, new { @class = "form-control" })
+        <br />
+        @Html.Label("CityName", "Şehir")
+        @Html.DropDownListFor(m => m.CityId, (SelectList)ViewBag.Cities, new { @class = "form-control" })
+        <br />
+        @Html.Label("InternshipStartDate", "Başlangıç Tarihi")
+        @Html.TextBox("InternshipStartDate", Model.InternshipStartDate.ToString("dd.MM.yyyy"), new { @class = "form-control", @type = "text", @placeholder = "gg.aa.yyyy", @id = "InternshipStartDate" })
+        <br />
+        @Html.Label("InternshipEndDate", "Bitiş Tarihi")
+        @Html.TextBox("InternshipEndDate", Model.InternshipEndDate.ToString("dd.MM.yyyy"), new { @class = "form-control", @type = "text", @placeholder = "gg.aa.yyyy", @id = "InternshipEndDate" })
+        <br />
+    </div>
+    <div>
+        <button class="btn btn-warning">Güncelle</button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $("#InternshipStartDate, #InternshipEndDate").on("input", function () {
+            var input = $(this).val().replace(/\D/g, ""); // Sadece rakamları al
+
+            // Formatı dd.MM.yyyy olarak ayarla
+            var formattedDate = "";
+
+            if (input.length >= 2) {
+                formattedDate += input.substring(0, 2) + ".";
+            }
+            if (input.length >= 4) {
+                formattedDate += input.substring(2, 4) + ".";
+            }
+            if (input.length >= 8) {
+                formattedDate += input.substring(4, 8);
+            }
+
+            // Alanı güncelle
+            $(this).val(formattedDate);
+        });
+    });
+</script>
+
+
+
+
+

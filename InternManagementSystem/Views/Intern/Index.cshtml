@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_InternLayout.cshtml";
+}
+@model MyViewModel
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Modal</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<div class="container">
+    <div class="card">
+        <div class="card-header text-center">
+            Stajyer Kaydet
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "Intern", FormMethod.Post, new { id = "internForm" }))
+            {
+                <br />
+                <div class="input-group">
+                    <span class="input-group-text">İsim ve Soyisim</span>
+                    <input type="text" aria-label="First name" class="form-control" oninput="capitalizeFirstLetter(this)" name="FirstName" required>
+                    <input type="text" aria-label="Last name" class="form-control" oninput="capitalizeFirstLetter(this)" name="LastName" required>
+                </div>
+                <br />
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="uniradio">
+                <label class="form-check-label" for="uniradio">
+                    Üniversite
+                </label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="liseradio">
+                <label class="form-check-label" for="liseradio">
+                    Lise
+                </label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="digerradio">
+                <label class="form-check-label" for="digerradio">
+                    Diğer
+                </label>
+                <br />
+                <select class="form-select" name="SelectedUniversityId" style="display:none;">
+                    <option selected disabled value=" ">Üniversite Seç</option>
+                    @foreach (var universities in Model.Universities)
+                    {
+                        <option value="@universities.UniversityId">@universities.UniversityName</option>
+                    }
+                </select>
+                <select class="form-select" name="SelectedHschoolsId" style="display:none;">
+                    <option selected disabled value=" ">Lise Seç</option>
+                    @foreach (var hschools in Model.Hschools)
+                    {
+                        <option value="@hschools.HschoolId">@hschools.HschoolName</option>
+                    }
+                </select>
+
+                <input type="text" id="OtherTextInput" name="OtherTextInput" style="display:none;" oninput="capitalizeFirstLetter(this)" class="form-control" placeholder="Diğer bilgiyi giriniz" />
+                <br />
+                <select class="form-select" name="SelectedDepartmentId" aria-label="Default select example">
+                    <option selected disabled value=" ">Bölüm Seç</option>
+                    @foreach (var departments in Model.Departments)
+                    {
+                        <option value="@departments.DepartmentId">@departments.DepartmentName</option>
+                    }
+                </select>
+                <br />
+                <select class="form-select" name="SelectedCityId">
+                    <option selected disabled value=" ">Şehir Seç</option>
+                    @foreach (var cities in Model.Cities)
+                    {
+                        <option value="@cities.CityId">@cities.CityName</option>
+                    }
+                </select>
+                <br />
+
+                <div>
+                    <label for="exampleInputEmail1" class="form-label">E-Posta</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+                    <div id="emailHelp" class="form-text">E-Postanızı kimse ile paylaşmayacağız.</div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-6">
+                        <label for="dateInput" class="form-label">Stajyer Başlangıç Tarihi</label>
+                        <input type="date" class="form-control" id="InternshipStart" name="InternshipStart">
+                    </div>
+                    <div class="col-6">
+                        <label for="dateInput" class="form-label">Stajyer Bitiş Tarihi</label>
+                        <input type="date" class="form-control" id="InternshipEnd" name="InternshipEnd">
+                    </div>
+                </div>
+                <br>
+
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                <div class="modal" id="Modal1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">Bilgi!</h2>
+                                <button class="btn btn-close" id="btnkapat"></button>
+                            </div>
+                            <div class="modal-body">
+                                Kullanıcı başarılı bir şekilde kayıt oldu..!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var radiouni = document.getElementById("uniradio");
+        var radiolise = document.getElementById("liseradio");
+        var radiodiger = document.getElementById("digerradio");
+        var kapatbuton = document.getElementById("btnclose");
+
+        var selectuni = document.querySelector('select[name="SelectedUniversityId"]');
+        var selectlise = document.querySelector('select[name="SelectedHschoolsId"]');
+        var digertext = document.getElementById("OtherTextInput");
+
+        function toggleselects() {
+            if (radiouni.checked) {
+                selectuni.style.display = "block";
+                selectlise.style.display = "none";
+                digertext.style.display = "none";
+            }
+            else if (radiolise.checked) {
+                selectuni.style.display = "none";
+                selectlise.style.display = "block";
+                digertext.style.display = "none";
+            }
+            else if (radiodiger.checked) {
+                selectuni.style.display = "none";
+                selectlise.style.display = "none";
+                digertext.style.display = "block";
+            }
+        }
+        radiouni.addEventListener("change", toggleselects);
+        radiolise.addEventListener("change", toggleselects);
+        radiodiger.addEventListener("change", toggleselects);
+        toggleselects;
+
+        var form = document.querySelector('form');
+        form.addEventListener("submit", function (event) {
+            var selectedValue;
+            if (radiouni.checked) {
+                selectedValue = document.querySelector('select[name="SelectedUniversityId"]').value;
+                document.querySelector('input[name="SelectedUniversityName"]').value = selectedValue;
+            } else if (radiolise.checked) {
+                selectedValue = document.querySelector('select[name="SelectedHschoolsId"]').value;
+                document.querySelector('input[name="SelectedHschoolsName"]').value = selectedValue;
+            } else if (radiodiger.checked) {
+                selectedValue = document.querySelector('input[name="OtherTextInput"]').value;
+                document.querySelector('input[name="OtherTextInput"]').value = selectedValue;
+            }
+            if (!radiouni.checked && !radiolise.checked && !radiodiger.checked) {
+                event.preventDefault();
+                alert("Bir seçenek seçmelisiniz.");
+            }
+            Event.preventDefault();
+            var formdata = new FormData(form);
+
+        });
+    });
+    function capitalizeFirstLetter(input) {
+        let words = input.value.split(' ');
+        words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+        input.value = words.join(' ');
+    }
+    $(document).ready(function () {
+        $("#internForm").one('submit', function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function (response) {
+                    $('#Modal1').modal('show');
+                },
+                error: function () {
+                    alert('Form gönderimi başarısız oldu.');
+                }
+            });
+        });
+        $('#btnkapat').on('click', function () {
+            $('#Modal1').modal('hide');
+            $("#internForm")[0].reset();
+            window.location.href = '/ViewIntern/Index';
+        });
+        $('#Modal1').on('hidden.bs.modal', function () {
+            $("#internForm")[0].reset();
+            window.location.href = '/ViewIntern/Index';
+        });
+    });
+
+</script>

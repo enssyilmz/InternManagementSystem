@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="InternDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdminInfos">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="CityName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="int" Nullable="false" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hschools">
+          <Key>
+            <PropertyRef Name="HschoolId" />
+          </Key>
+          <Property Name="HschoolId" Type="int" Nullable="false" />
+          <Property Name="HschoolName" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InternInfos">
+          <Key>
+            <PropertyRef Name="InternId" />
+          </Key>
+          <Property Name="InternId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="InternshipStartDate" Type="date" Nullable="false" />
+          <Property Name="InternshipEndDate" Type="date" Nullable="false" />
+          <Property Name="UniversityId" Type="int" />
+          <Property Name="HschoolId" Type="int" />
+          <Property Name="OtherName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Universities">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+          </Key>
+          <Property Name="UniversityId" Type="int" Nullable="false" />
+          <Property Name="UniversityName" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_InternInfos_Cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="InternInfos" Type="Self.InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternInfos_Departments">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="1" />
+          <End Role="InternInfos" Type="Self.InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DepartmentId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternInfos_Hschools">
+          <End Role="Hschools" Type="Self.Hschools" Multiplicity="0..1" />
+          <End Role="InternInfos" Type="Self.InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hschools">
+              <PropertyRef Name="HschoolId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="HschoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternInfos_Universities">
+          <End Role="Universities" Type="Self.Universities" Multiplicity="0..1" />
+          <End Role="InternInfos" Type="Self.InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Universities">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InternDbModelStoreContainer">
+          <EntitySet Name="AdminInfos" EntityType="Self.AdminInfos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hschools" EntityType="Self.Hschools" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternInfos" EntityType="Self.InternInfos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Universities" EntityType="Self.Universities" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_InternInfos_Cities" Association="Self.FK_InternInfos_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternInfos_Departments" Association="Self.FK_InternInfos_Departments">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternInfos_Hschools" Association="Self.FK_InternInfos_Hschools">
+            <End Role="Hschools" EntitySet="Hschools" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternInfos_Universities" Association="Self.FK_InternInfos_Universities">
+            <End Role="Universities" EntitySet="Universities" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InternDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="InternDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdminInfos" EntityType="InternDbModel.AdminInfos" />
+          <EntitySet Name="Cities" EntityType="InternDbModel.Cities" />
+          <EntitySet Name="Departments" EntityType="InternDbModel.Departments" />
+          <EntitySet Name="Hschools" EntityType="InternDbModel.Hschools" />
+          <EntitySet Name="InternInfos" EntityType="InternDbModel.InternInfos" />
+          <EntitySet Name="sysdiagrams" EntityType="InternDbModel.sysdiagrams" />
+          <EntitySet Name="Universities" EntityType="InternDbModel.Universities" />
+          <AssociationSet Name="FK_InternInfos_Cities" Association="InternDbModel.FK_InternInfos_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternInfos_Departments" Association="InternDbModel.FK_InternInfos_Departments">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternInfos_Hschools" Association="InternDbModel.FK_InternInfos_Hschools">
+            <End Role="Hschools" EntitySet="Hschools" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternInfos_Universities" Association="InternDbModel.FK_InternInfos_Universities">
+            <End Role="Universities" EntitySet="Universities" />
+            <End Role="InternInfos" EntitySet="InternInfos" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AdminInfos">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="CityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="InternInfos" Relationship="InternDbModel.FK_InternInfos_Cities" FromRole="Cities" ToRole="InternInfos" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="InternInfos" Relationship="InternDbModel.FK_InternInfos_Departments" FromRole="Departments" ToRole="InternInfos" />
+        </EntityType>
+        <EntityType Name="Hschools">
+          <Key>
+            <PropertyRef Name="HschoolId" />
+          </Key>
+          <Property Name="HschoolId" Type="Int32" Nullable="false" />
+          <Property Name="HschoolName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="InternInfos" Relationship="InternDbModel.FK_InternInfos_Hschools" FromRole="Hschools" ToRole="InternInfos" />
+        </EntityType>
+        <EntityType Name="InternInfos">
+          <Key>
+            <PropertyRef Name="InternId" />
+          </Key>
+          <Property Name="InternId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InternshipStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="InternshipEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UniversityId" Type="Int32" />
+          <Property Name="HschoolId" Type="Int32" />
+          <Property Name="OtherName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cities" Relationship="InternDbModel.FK_InternInfos_Cities" FromRole="InternInfos" ToRole="Cities" />
+          <NavigationProperty Name="Departments" Relationship="InternDbModel.FK_InternInfos_Departments" FromRole="InternInfos" ToRole="Departments" />
+          <NavigationProperty Name="Hschools" Relationship="InternDbModel.FK_InternInfos_Hschools" FromRole="InternInfos" ToRole="Hschools" />
+          <NavigationProperty Name="Universities" Relationship="InternDbModel.FK_InternInfos_Universities" FromRole="InternInfos" ToRole="Universities" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Universities">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+          </Key>
+          <Property Name="UniversityId" Type="Int32" Nullable="false" />
+          <Property Name="UniversityName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="InternInfos" Relationship="InternDbModel.FK_InternInfos_Universities" FromRole="Universities" ToRole="InternInfos" />
+        </EntityType>
+        <Association Name="FK_InternInfos_Cities">
+          <End Type="InternDbModel.Cities" Role="Cities" Multiplicity="1" />
+          <End Type="InternDbModel.InternInfos" Role="InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternInfos_Departments">
+          <End Type="InternDbModel.Departments" Role="Departments" Multiplicity="1" />
+          <End Type="InternDbModel.InternInfos" Role="InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DepartmentId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternInfos_Hschools">
+          <End Type="InternDbModel.Hschools" Role="Hschools" Multiplicity="0..1" />
+          <End Type="InternDbModel.InternInfos" Role="InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hschools">
+              <PropertyRef Name="HschoolId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="HschoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternInfos_Universities">
+          <End Type="InternDbModel.Universities" Role="Universities" Multiplicity="0..1" />
+          <End Type="InternDbModel.InternInfos" Role="InternInfos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Universities">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="InternInfos">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InternDbModelStoreContainer" CdmEntityContainer="InternDbEntities">
+          <EntitySetMapping Name="AdminInfos">
+            <EntityTypeMapping TypeName="InternDbModel.AdminInfos">
+              <MappingFragment StoreEntitySet="AdminInfos">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="InternDbModel.Cities">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="InternDbModel.Departments">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hschools">
+            <EntityTypeMapping TypeName="InternDbModel.Hschools">
+              <MappingFragment StoreEntitySet="Hschools">
+                <ScalarProperty Name="HschoolName" ColumnName="HschoolName" />
+                <ScalarProperty Name="HschoolId" ColumnName="HschoolId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternInfos">
+            <EntityTypeMapping TypeName="InternDbModel.InternInfos">
+              <MappingFragment StoreEntitySet="InternInfos">
+                <ScalarProperty Name="OtherName" ColumnName="OtherName" />
+                <ScalarProperty Name="HschoolId" ColumnName="HschoolId" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="InternshipEndDate" ColumnName="InternshipEndDate" />
+                <ScalarProperty Name="InternshipStartDate" ColumnName="InternshipStartDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="InternId" ColumnName="InternId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="InternDbModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Universities">
+            <EntityTypeMapping TypeName="InternDbModel.Universities">
+              <MappingFragment StoreEntitySet="Universities">
+                <ScalarProperty Name="UniversityName" ColumnName="UniversityName" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
